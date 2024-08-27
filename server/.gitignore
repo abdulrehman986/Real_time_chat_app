@@ -1,0 +1,14 @@
+/node_modules
+/public/uploads/*
+# output of `npm run build`
+/dist
+
+
+# database
+.env
+.env.dev
+.env.test
+/config
+
+# logs
+/logs

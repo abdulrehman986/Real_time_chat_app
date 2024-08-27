@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { NG_ROK } from '../helper/Constants';
 
 const SignUpForm = () => {
     const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ const SignUpForm = () => {
         setSuccess(false);
 
         try {
-            const response = await axios.post('http://localhost:5050/v0/signup', formData);
+            const response = await axios.post(`${NG_ROK}/v0/signup`, formData);
             console.log(response.data);
             setSuccess(true);
             navigate('/login');

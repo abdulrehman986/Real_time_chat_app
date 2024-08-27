@@ -1,0 +1,1 @@
+export const NG_ROK = "http://localhost:5050"

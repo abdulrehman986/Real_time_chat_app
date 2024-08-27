@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { NG_ROK } from '../helper/Constants';
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ const LoginForm = () => {
         setError('');
 
         try {
-            const response = await axios.post('http://localhost:5050/v0/login', formData, {
+            const response = await axios.post(`${NG_ROK}/v0/login`, formData, {
                 withCredentials: true // This is important for sending and receiving cookies
             });
             console.log(response.data);
@@ -33,7 +34,7 @@ const LoginForm = () => {
     };
     const checkSession = async () => {
         try {
-            await axios.get('http://localhost:5050/v0/session', {
+            await axios.get(`${NG_ROK}/v0/session`, {
                 withCredentials: true
             });
             navigate('/');

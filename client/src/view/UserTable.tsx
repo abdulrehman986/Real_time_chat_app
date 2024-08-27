@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { NG_ROK } from '../helper/Constants';
 
 const UserTable = () => {
     const [users, setUsers] = useState([]);
@@ -13,7 +14,7 @@ const UserTable = () => {
 
     const checkSession = async () => {
         try {
-            await axios.get('http://localhost:5050/v0/session', {
+            await axios.get(`${NG_ROK}/v0/session`, {
                 withCredentials: true
             });
             fetchUsers();
@@ -24,7 +25,7 @@ const UserTable = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:5050/v0/users', {
+            const response = await axios.get(`${NG_ROK}/v0/users`, {
                 withCredentials: true
             });
             setUsers(response.data);
@@ -36,7 +37,7 @@ const UserTable = () => {
 
     const handleLogout = async () => {
         try {
-            await axios.post('http://localhost:5050/v0/logout', {}, {
+            await axios.post(`${NG_ROK}/v0/logout`, {}, {
                 withCredentials: true
             });
             navigate('/login');

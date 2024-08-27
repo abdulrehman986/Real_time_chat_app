@@ -23,7 +23,7 @@ export function SessionInit(app: express.Application) {
       sameSite: config.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: config.NODE_ENV === 'production' ? true : false, // cookie will only be sent over HTTPS
       // secure: true,
-      // sameSite: 'none'
+      // sameSite: 'none',
     },
   });
   app.use(sessionMiddleware);

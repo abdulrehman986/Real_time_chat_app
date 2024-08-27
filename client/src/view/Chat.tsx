@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import io from 'socket.io-client';
+import { NG_ROK } from '../helper/Constants';
 
 type MessageAttributes = {
     id: number;
@@ -24,7 +25,7 @@ const ChatCard = () => {
         checkSession();
         fetchUserDetails();
 
-        socketRef.current = io('http://localhost:5050');
+        socketRef.current = io(`${NG_ROK}`);
 
         socketRef.current.on('receiveMessage', (message: MessageAttributes) => {
             setMessages(prevMessages => [...prevMessages, message]);
@@ -49,7 +50,7 @@ const ChatCard = () => {
 
     const checkSession = async () => {
         try {
-            const response = await axios.get('http://localhost:5050/v0/session', {
+            const response = await axios.get(`${NG_ROK}/v0/session`, {
                 withCredentials: true
             });
             setSessionUser(response.data);
@@ -60,7 +61,7 @@ const ChatCard = () => {
 
     const fetchUserDetails = async () => {
         try {
-            const response = await axios.get(`http://localhost:5050/v0/user/${recipientId}`, {
+            const response = await axios.get(`${NG_ROK}/v0/user/${recipientId}`, {
                 withCredentials: true
             });
             setUser(response.data);

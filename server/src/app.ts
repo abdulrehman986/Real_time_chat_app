@@ -7,6 +7,7 @@ import AppRoutes from './routes';
 import { sequelize } from './services/db/db';
 import cors from 'cors';
 import { SessionInit } from './services/session';
+import { getAppCorsUrl } from './utils/helpers';
 
 const app = express();
 const server = http.createServer(app);
@@ -19,13 +20,21 @@ SessionInit(app);
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || 'http://localhost:5173'.indexOf(origin) !== -1) {
+      if (
+        !origin ||
+        [
+          'http://localhost:3000',
+          'https://rtcapp.serveo.net',
+          'http://localhost:5173',
+        ].indexOf(origin) !== -1
+      ) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
     credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   }),
 );
 

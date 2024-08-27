@@ -2,11 +2,16 @@ import { Server, Socket } from 'socket.io';
 import http from 'http';
 import { Message } from '../../models';
 import { Op } from 'sequelize';
+import { getAppCorsUrl } from '../utils/helpers';
 
 export const initializeSocket = (server: http.Server) => {
   const io = new Server(server, {
     cors: {
-      origin: 'http://localhost:5173',
+      origin: [
+        'http://localhost:3000',
+        'https://rtcapp.serveo.net',
+        'http://localhost:5173',
+      ],
       methods: ['GET', 'POST'],
     },
   });

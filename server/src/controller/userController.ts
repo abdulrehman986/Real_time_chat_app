@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Message, User } from '../models';
 import { isValidPassword } from '../services/bcrypt';
 import { createUserId } from '../services/uuid';
-import { Op } from 'sequelize';
+import { Op, fn, col } from 'sequelize';
 
 export const createUser = async (req: Request, res: Response) => {
   try {
@@ -161,5 +161,37 @@ export const getUserById = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(`Error getUserById =: ${error}`);
     return res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+export const getUnreadMessages = async (req: Request, res: Response) => {
+  try {
+    const userId = req.session.userId;
+    const unreadCounts = await Message.findAll({
+      attributes: ['senderId', [fn('COUNT', col('id')), 'unreadCount']],
+      where: {
+        recipientId: userId,
+        read: false,
+      },
+      group: ['senderId'],
+    });
+
+    return res.status(200).json(unreadCounts);
+  } catch (error) {
+    console.error('Error fetching unread message counts:', error);
+    res.status(500).json({ error: 'Failed to fetch unread message counts' });
+  }
+};
+
+export const markAsRead = async (req, res) => {
+  try {
+    const { senderId, recipientId } = req.body;
+
+    await Message.update({ read: true }, { where: { senderId, recipientId } });
+
+    return res.status(200).json({ message: 'Messages marked as read' });
+  } catch (error) {
+    console.error('Error marking messages as read:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };

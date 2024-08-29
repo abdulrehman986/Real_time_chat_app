@@ -3,4 +3,5 @@ export type MessageAttributes = {
   senderId: string;
   recipientId: string;
   message: string;
+  read: boolean;
 };
